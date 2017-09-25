@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.qingjiezhao.bean">
+	<class name="UserBean" table="user">
+		<id name="id" column="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+		<property name="username" type="java.lang.String">
+			<column name="username" />
+		</property>
+		<property name="password" type="java.lang.String">
+			<column name="password" />
+		</property>
+		<property name="gender" type="java.lang.String">
+			<column name="gender" />
+		</property>
+		<property name="age" type="java.lang.String">
+			<column name="age" />
+		</property>
+		<property name="email" type="java.lang.String">
+			<column name="email" />
+		</property>
+		<property name="currentTime" type="java.sql.Timestamp">
+			<column name="currentTime" />
+		</property>
+		<property name="description" type="java.lang.String">
+			<column name="description" />
+		</property>
+		<set name="locationBeans" table="user_has_location" cascade="all">
+			<key column="user_id" />
+			<many-to-many column="location_id" class="LocationBean" />
+		</set>
+	</class>
+</hibernate-mapping>

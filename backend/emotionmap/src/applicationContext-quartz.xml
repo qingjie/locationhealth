@@ -1,0 +1,61 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="generateDailyReport"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="reportService" />
+		<property name="targetMethod" value="generateDailyReport" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="generateWeeklyReport"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="reportService" />
+		<property name="targetMethod" value="generateWeeklyReport" />
+		<property name="concurrent" value="false" />
+	</bean>
+	<bean id="generateMonthlyReport"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="reportService" />
+		<property name="targetMethod" value="generateMonthlyReport" />
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<!-- Cron Trigger, run at 23:59:59 PM -->
+	<bean id="cronDailyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="generateDailyReport" />
+		<property name="cronExpression" value="59 59 23 ? * *"/>
+		<!-- <property name="cronExpression" value="59 * * ? * *"/> -->
+	</bean>
+	<!-- Cron Trigger, run at 23:10:59 PM of every Sunday -->
+	<bean id="cronWeeklyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="generateWeeklyReport" />
+		<property name="cronExpression" value="59 10 23 ? * 1"/>
+		<!-- <property name="cronExpression" value="59 15 23 ? * *"/> -->
+	</bean>
+	<!-- Cron Trigger, run at 23:30:59 PM of the last day of month -->
+ 	<bean id="cronMonthlyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="generateMonthlyReport" />
+		<property name="cronExpression" value="59 30 23 L * ?"/>
+
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="jobDetails">
+			<list>
+				<ref bean="generateDailyReport" />
+				<ref bean="generateWeeklyReport" />
+				<ref bean="generateMonthlyReport" />
+			</list>
+		</property>
+		<property name="triggers">
+			<list>
+				<ref bean="cronDailyTrigger" />
+				<ref bean="cronWeeklyTrigger" />
+				<ref bean="cronMonthlyTrigger" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

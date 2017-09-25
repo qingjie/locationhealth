@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<!-- ========================= SERVICE DEFINITIONS ========================= -->
+
+	<!-- emotionServiceTarget -->
+	<bean id="emotionServiceTarget" class="com.qingjiezhao.service.impl.EmotionServiceImpl">
+		<property name="emotionDao">
+			<ref bean="emotionDao" />
+		</property>
+	</bean>
+	<!-- userLocationServiceTarget -->
+	<bean id="userLocationServiceTarget" class="com.qingjiezhao.service.impl.UserLocationServiceImpl">
+		<property name="userDao">
+			<ref bean="userDao" />
+		</property>
+		<property name="locationDao">
+			<ref bean="locationDao" />
+		</property>
+	</bean>
+	<!-- reportServiceTarget -->
+	<bean id="reportServiceTarget" class="com.qingjiezhao.service.impl.ReportServiceImpl">
+		<property name="userDao">
+			<ref bean="userDao" />
+		</property>
+		<property name="locationDao">
+			<ref bean="locationDao" />
+		</property>
+		<property name="dayDao">
+			<ref bean="dayDao" />
+		</property>
+		<property name="weekDao">
+			<ref bean="weekDao" />
+		</property>
+		<property name="monthDao">
+			<ref bean="monthDao" />
+		</property>
+		<property name="emotionDao">
+			<ref bean="emotionDao" />
+		</property>
+	</bean>
+
+
+	<!-- ========================= TRANSACTIONAL SERVICE DEFINITIONS ========================= -->
+
+	<bean id="adminServiceProxyTemplate" abstract="true"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager">
+			<ref bean="transactionManager" />
+		</property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- emotionService -->
+	<bean id="emotionService" parent="adminServiceProxyTemplate">
+		<property name="target">
+			<ref local="emotionServiceTarget" />
+		</property>
+	</bean>
+	<!-- userLocationService -->
+	<bean id="userLocationService" parent="adminServiceProxyTemplate">
+		<property name="target">
+			<ref local="userLocationServiceTarget" />
+		</property>
+	</bean>
+	<!-- reportService -->
+	<bean id="reportService" parent="adminServiceProxyTemplate">
+		<property name="target">
+			<ref local="reportServiceTarget" />
+		</property>
+	</bean>
+</beans>

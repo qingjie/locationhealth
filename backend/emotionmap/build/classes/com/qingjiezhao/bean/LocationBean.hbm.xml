@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.qingjiezhao.bean">
+	<class name="LocationBean" table="location">
+		<id name="id" column="id" type="java.lang.Integer">
+			<generator class="identity" />
+		</id>
+		<property name="latitude" type="java.lang.String">
+			<column name="latitude" />
+		</property>
+		<property name="longitude" type="java.lang.String">
+			<column name="longitude" />
+		</property>
+		<property name="emotion_selected" type="java.lang.String">
+			<column name="emotion_selected" />
+		</property>
+		<property name="currentTime" type="java.sql.Timestamp">
+			<column name="currentTime" />
+		</property>
+		<property name="description" type="java.lang.String">
+			<column name="description" />
+		</property>
+		<set name="userBeans" table="user_has_location" cascade="all">
+			<key column="location_id" />
+			<many-to-many column="user_id" class="UserBean" />
+		</set>
+	</class>
+</hibernate-mapping>

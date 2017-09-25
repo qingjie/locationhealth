@@ -1,0 +1,7 @@
+com.qingjiezhao.bean
+com.qingjiezhao.controller
+com.qingjiezhao.dao
+com.qingjiezhao.dao.impl
+com.qingjiezhao.form
+com.qingjiezhao.service
+com.qingjiezhao.service.impl

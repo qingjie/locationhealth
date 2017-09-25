@@ -1,0 +1,7 @@
+
+
+@interface FlipsideView : UIView {
+	
+}
+
+@end
